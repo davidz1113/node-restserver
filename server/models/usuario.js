@@ -43,6 +43,17 @@ let usuarioSchema = new Schema({
 
 });
 
+//este metodo sobreescribe la estructura del objeto de usuario, esto con el fin de evitar 
+//devolver el campo y el valor de la contraseña en la respuesta json.
+usuarioSchema.methods.toJSON = function() {
+    let user = this;
+    let userObject = user.toObject();
+    delete userObject.password;
+
+    return userObject;
+
+}
+
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
