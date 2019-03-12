@@ -21,7 +21,7 @@ app.use(require('./routes/usuario'));
 
 //conexion a base de datos
 //parametro de base de datos, url, puerto, nombre base de datos
-mongoose.connect(process.env.urlDB, { useNewUrlParser: true }, (err, res) => {
+mongoose.connect(process.env.urlDB, { useNewUrlParser: true, useCreateIndex: true }, (err, res) => {
     if (err) throw new err;
 
     console.log('Base de datos Online')
