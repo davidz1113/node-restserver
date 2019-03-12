@@ -20,7 +20,8 @@ app.get('/usuario', function(req, res) {
     limite = Number(limite);
 
     //dentro de find({ aqui van los filtros, ejemplo google:true // todos los usuarios que tengan una cuenta de google })
-    Usuario.find({})
+    //Segundo parametro para excluir o traer solo los atributos que necesito de la base de datos.
+    Usuario.find({ estado: true }, 'nombre email estado google role img')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
@@ -35,8 +36,8 @@ app.get('/usuario', function(req, res) {
             Usuario.count({}, (err, conteo) => {
                 res.json({
                     ok: true,
+                    cuantos: conteo,
                     usuarios,
-                    cuantos: conteo
                 })
             });
 
@@ -113,8 +114,57 @@ app.put('/usuario/:id', function(req, res) {
 
 
 });
-app.delete('/usuario', function(req, res) {
-    res.json('delete Usuario')
+
+
+//para eliminar el usuario o un registro
+app.delete('/usuario/:id', function(req, res) {
+
+    let id = req.params.id;
+    //se trabaja igual que el actualizar, se envia el id y el resto es un callback
+    //comentado ya que para la eliminacion de los registros, ahora solo se cambia el estado
+    //del registro de la base de datos.
+    // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
+    //     if (err) {
+    //         return res.status(400).json({
+    //             ok: false,
+    //             err
+    //         });
+    //     }
+
+    //     if (!usuarioBorrado) {
+    //         return res.status(400).json({
+    //             ok: false,
+    //             err: {
+    //                 message: 'Usuario no encontrado'
+    //             }
+    //         });
+    //     }
+
+    //     res.json({
+    //         ok: true,
+    //         usuario: usuarioBorrado
+    //     });
+    // })
+    //puede ser asi o simplemente el objeto
+    /**
+     * let objeto = {estado:false}
+     */
+    let body = _.pick({ estado: false }, ['estado']);
+    Usuario.findByIdAndUpdate(id, body, { new: true }, (err, usuarioDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            usuario: usuarioDB
+        });
+    })
+
+
 });
 
 
