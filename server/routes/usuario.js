@@ -98,6 +98,8 @@ app.put('/usuario/:id', function(req, res) {
 
     //metodo del modelo SCHEMA del usuario que se encarga de actualizar
     //automaticamente mediante el id, devuelve un error o un callBack
+    //el tercer parametro son opciones como:
+    //new:true (retorna el nuevo usuario modificado)
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({

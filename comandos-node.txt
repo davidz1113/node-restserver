@@ -1,0 +1,48 @@
+--Instalar mongoDB
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/?_ga=2.189409579.1881109213.1551194093-1080423403.1551194093
+--crear la carpeta de mongo
+cd C:\
+md "\data\db"
+--para correr mongo localmente
+"C:\Program Files\MongoDB\Server\4.0\bin\mongod.exe" --dbpath="c:\data\db"
+"D:\Program Files\MongoDB\Server\4.0\bin\mongod.exe" --dbpath="D:\data\db"
+--iniciar el proyecto con npm para que cargue el archivo package.json
+npm init
+--instalar express
+npm install express --save
+--para diagramas gratuitos
+https://www.draw.io
+--instalar moongose (util para crear esquemas)
+https://www.npmjs.com/package/mongoose
+npm i mongoose --save
+--instalar el unique validator para datos o atributos unicos
+npm i mongoose-unique-validator --save
+--para las claves encriptadas, instalar un paquete bdcryp para windows en su ultima version
+npm install bcrypt@3.0.2
+--instalar el paquete de encriptacion de una sola via
+npm i bcrypt --save
+
+
+----------------------------------------MongoDbAtlas---------------------------------
+user: death-stroke
+pass: op6IBi3p2uHxZqIG
+
+mongo "mongodb+srv://cluster0-vclgj.mongodb.net/test"     --username death-stroke
+
+
+
+--------------------------------------------Heroku------------------------------------
+--instalar el heroku cli desde la pagina de heroku
+--Para logearse en heroku
+heroku login
+--iniciar un proyecto nuevo en heroku
+heroku create (si no se especifica el nombre, se creara uno por defecto con un nombre cualquiera)
+para configurar las variables de entorno de heroku
+
+heroku config:set MONGO_URI="XXXXXXX"
+ 
+    heroku config:get nombre
+    heroku config:unset nombre
+    heroku config:set nombre="Fernando"
+
+.

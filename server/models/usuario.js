@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-
+//enumeracion para validar los roles permitidos
 let rolesValidos = {
     values: ['ADMIN_ROLE', 'USER_ROLE'],
     message: '{VALUE} no es un rol válido'
@@ -53,7 +53,9 @@ usuarioSchema.methods.toJSON = function() {
     return userObject;
 
 }
-
+//para configurar cuando caiga en un error por la validacion del unique validator
+//en el {PATH} se muestra el campo, en este caso seria el email 
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 
+//el nombre en parentesis es el nombre del modelo
 module.exports = mongoose.model('Usuario', usuarioSchema);
