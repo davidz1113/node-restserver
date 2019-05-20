@@ -21,7 +21,8 @@ npm i mongoose-unique-validator --save
 npm install bcrypt@3.0.2
 --instalar el paquete de encriptacion de una sola via
 npm i bcrypt --save
-
+--instalar la libreria de underscore para manejo de objetos
+npm install underscore --save
 
 ----------------------------------------MongoDbAtlas---------------------------------
 user: death-stroke
