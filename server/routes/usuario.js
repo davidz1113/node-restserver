@@ -33,7 +33,7 @@ app.get('/usuario', function(req, res) {
             }
 
             //al igual que en el find, dentro de los {} van las condiciones o filtros
-            Usuario.count({}, (err, conteo) => {
+            Usuario.count({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
                     cuantos: conteo,
