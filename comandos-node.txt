@@ -39,11 +39,15 @@ heroku login
 --iniciar un proyecto nuevo en heroku
 heroku create (si no se especifica el nombre, se creara uno por defecto con un nombre cualquiera)
 para configurar las variables de entorno de heroku
+--Para ver las configuraciones o variables de entorno de heroku
+heroku config 
 
+--configurar una variable en heroku
 heroku config:set MONGO_URI="XXXXXXX"
  
-    heroku config:get nombre
-    heroku config:unset nombre
-    heroku config:set nombre="Fernando"
+ --obtener variables de heroku y configurar o borrar
+heroku config:get nombre
+heroku config:unset nombre
+heroku config:set nombre="Fernando"
 
 .
