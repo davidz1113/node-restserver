@@ -17,7 +17,8 @@ app.use(bodyParser.json());
 
 //usar las rutas de otro archivo
 //significa llamar todo el codigo de usuarios.js de las rutas y ejecutarlo aqui.
-app.use(require('./routes/usuario'));
+app.use(require('./routes/index'));
+
 
 //conexion a base de datos
 //parametro de base de datos, url, puerto, nombre base de datos

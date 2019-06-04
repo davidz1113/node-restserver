@@ -23,6 +23,8 @@ npm install bcrypt@3.0.2
 npm i bcrypt --save
 --instalar la libreria de underscore para manejo de objetos
 npm install underscore --save
+--instalar el jsonwebtoken
+npm install jsonwebtoken --save
 
 ----------------------------------------MongoDbAtlas---------------------------------
 user: death-stroke

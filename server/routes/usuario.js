@@ -9,9 +9,10 @@ const _ = require('underscore');
 //llamar al modelo que es el esquema de la base de datos mongo
 const Usuario = require('../models/usuario');
 
+const { verificaToken } = require('../middlewares/autenticacion')
 
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificaToken, (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
