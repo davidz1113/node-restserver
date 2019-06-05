@@ -9,10 +9,16 @@ const _ = require('underscore');
 //llamar al modelo que es el esquema de la base de datos mongo
 const Usuario = require('../models/usuario');
 
-const { verificaToken } = require('../middlewares/autenticacion')
+const { verificaToken, verificaAdmin_role } = require('../middlewares/autenticacion')
 
 
 app.get('/usuario', verificaToken, (req, res) => {
+
+    return res.json({
+        usuario: req.usuario,
+        nombre: req.usuario.nombre,
+        email: req.usuario.email
+    })
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -48,7 +54,7 @@ app.get('/usuario', verificaToken, (req, res) => {
 });
 
 //funcion de agregar un nuevo usuario
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken, verificaAdmin_role], (req, res) => {
     let body = req.body;
 
     //llammar el new usuario para psarle los datos al modelo de mongo
@@ -78,7 +84,7 @@ app.post('/usuario', function(req, res) {
 });
 
 //metodo para actualizar un usuario (:id, para recibir por parametro el id del usuario...)
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdmin_role], (req, res) => {
 
     let id = req.params.id;
     //para la funcion pick, solo se le especifica el objeto, y en un arreglo, solo aquellos atributos que se quieran ser modificadas
@@ -120,7 +126,7 @@ app.put('/usuario/:id', function(req, res) {
 
 
 //para eliminar el usuario o un registro
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_role], function(req, res) {
 
     let id = req.params.id;
     //se trabaja igual que el actualizar, se envia el id y el resto es un callback
