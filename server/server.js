@@ -5,6 +5,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const path = require('path');
+
 
 const app = express();
 
@@ -14,6 +16,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+
+//habilitar la carpeta public para poder acceder 
+
+app.use(express.static(path.resolve(__dirname, '../public')));
+
+
 
 //usar las rutas de otro archivo
 //significa llamar todo el codigo de usuarios.js de las rutas y ejecutarlo aqui.
