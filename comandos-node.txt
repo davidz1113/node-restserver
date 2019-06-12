@@ -25,6 +25,9 @@ npm i bcrypt --save
 npm install underscore --save
 --instalar el jsonwebtoken
 npm install jsonwebtoken --save
+--para validar el token de google
+npm install google-auth-library --save
+
 
 ----------------------------------------MongoDbAtlas---------------------------------
 user: death-stroke
