@@ -79,13 +79,14 @@ app.post('/google', async(req, res) => {
 
     let googleUser = await verify(token)
         .catch(e => {
-            // return res.status(403).json({
-            //     ok: false,
-            //     err: e
-            // });
+            console.log(e.message)
+            return res.status(403).json({
+                ok: false,
+                err: e.message
+            });
         });
-
-    if (!googleUser) { return; }
+    // console.log(googleUser)
+    if (!googleUser.nombre) { return; }
 
     Usuario.findOne({ email: googleUser.email }, (err, usuarioDB) => {
         if (err) {
