@@ -1,6 +1,6 @@
 const express = require('express');
 
-let { verificaToken } = require('../middlewares/autenticacion')
+let { verificaToken, verificaAdmin_role } = require('../middlewares/autenticacion')
 
 let app = express();
 
@@ -9,20 +9,81 @@ let Categoria = require('../models/categoria');
 
 /**
  * =========================
- * Mostrar todas las categorias
+ * Actualizar una categoria
  * =========================
  */
 
-app.get('/categoria', (req, res) => {
+app.put('/categoria/:id', verificaToken, (req, res) => {
+
+    let id = req.params.id;
+    let body = req.body;
+
+    let desCategoria = {
+        descripcion: body.descripcion
+    }
+
+    Categoria.findByIdAndUpdate(id, desCategoria, { new: true, runValidators: true }, (err, categoriaDB) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!categoriaDB) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            categoria: categoriaDB
+        })
+    })
+
+
 
 })
 
 
 /**
  * =========================
- * Mostrar las categorias por ID
+ * Eliminar las categorias por ID
  * =========================
  */
+
+app.delete('/categoria/:id', [verificaToken, verificaAdmin_role], (req, res) => {
+
+    let id = req.params.id;
+
+    Categoria.findByIdAndRemove(id, (err, categoriaDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!categoriaDB) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'El id no exisate'
+                }
+            });
+        }
+
+        res.json({
+            ok: true,
+            message: 'Categoria borrada'
+        })
+
+
+    });
+})
 
 
 /**
@@ -38,7 +99,7 @@ app.post('/categoria', verificaToken, (req, res) => {
 
     let categoria = new Categoria({
         descripcion: body.descripcion,
-        usuario: req.usuario._id
+        usuario: req.usuario._id //si no esta el verifica token no se podra obtener el id del usuario
     });
 
 
