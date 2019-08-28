@@ -60,6 +60,31 @@ app.get('/producto', verificaToken, (req, res) => {
 
 app.get('/producto/:id', verificaToken, (req, res) => {
     // populate: usuario categoria
+    let id = req.params.id;
+
+    Producto.findById(id, (err, productoDB) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+            if (!productoDB) {
+                return res.status(400).json({
+                    ok: false,
+                    err: {
+                        message: 'EL id no es correcto'
+                    }
+                });
+            }
+
+            res.json({
+                ok: true,
+                producto: productoDB
+            })
+        })
+        .populate('usuario', 'nombre email') //para traer info de otras tablas
+        .populate('categoria', 'descripcion') //para traer info de otras tablas
 
 });
 
