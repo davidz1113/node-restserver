@@ -11,10 +11,45 @@ let Producto = require('../models/producto');
  * ===================================
  */
 
-app.get('/producto', (req, res) => {
+app.get('/producto', verificaToken, (req, res) => {
     // traer los productos
     // populate: usuario categoria
     // paginado
+
+    let desde = req.query.desde || 0;
+    desde = Number(desde);
+
+    let limite = req.query.limite || 5;
+    limite = Number(limite);
+
+    //dentro de find({ aqui van los filtros, ejemplo google:true // todos los usuarios que tengan una cuenta de google })
+    //Segundo parametro para excluir o traer solo los atributos que necesito de la base de datos.
+    Producto.find({ disponible: true }, 'nombre precioUni descripcion categoria usuario disponible')
+        .skip(desde)
+        .limit(limite)
+        .populate('usuario', 'nombre email') //para traer info de otras tablas
+        .populate('categoria', 'descripcion') //para traer info de otras tablas
+        .populate()
+        .exec((err, productos) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            //al igual que en el find, dentro de los {} van las condiciones o filtros
+            Producto.count({ disponible: true }, (err, conteo) => {
+                res.json({
+                    ok: true,
+                    cuantos: conteo,
+                    productos,
+                })
+            });
+
+
+        });
+
 });
 
 /**
@@ -26,11 +61,6 @@ app.get('/producto', (req, res) => {
 app.get('/producto/:id', verificaToken, (req, res) => {
     // populate: usuario categoria
 
-    let desde = req.query.desde || 0;
-    desde = Number(desde);
-
-    let limite = req.query.limite || 5;
-    limite = Number(limite);
 });
 
 /**
