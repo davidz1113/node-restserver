@@ -182,10 +182,84 @@ app.put('/producto/:id', verificaToken, (req, res) => {
  * ===================================
  */
 
-app.delete('/producto/:id', (req, res) => {
+app.delete('/producto/:id', verificaToken, (req, res) => {
     // solo desactivar con el campo disponible
-    //
+    let id = req.params.id;
+
+    Producto.findById(id, (err, productoDB) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+
+        if (!productoDB) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'El id no existe'
+                }
+            });
+        }
+
+
+        productoDB.disponible = false;
+
+        productoDB.save((err, productoBorrado) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                productoBorrado,
+                message: 'Producto Borrado'
+            });
+
+        });
+    });
 
 });
+
+
+/**
+ * ===================================
+ * Buscar Produtos
+ * ===================================
+ */
+
+app.get('/producto/buscar/:termino', verificaToken, (req, res) => {
+
+    let termino = req.params.termino;
+
+    let regex = new RegExp(termino, 'i'); // el segundo parametro puesto en "i" es para sensible a las mayusculas
+
+    //se envia la expresion regex para que la busqueda sea mas sencible!
+    Producto.find({ nombre: regex })
+        .populate('categoria', 'descripcion')
+        .exec((err, productos) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                })
+            };
+
+
+            res.json({
+                ok: true,
+                productos
+            })
+
+        })
+})
 
 module.exports = app;
