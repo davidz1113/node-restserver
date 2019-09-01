@@ -34,7 +34,9 @@ app.put('/categoria/:id', verificaToken, (req, res) => {
         if (!categoriaDB) {
             return res.status(400).json({
                 ok: false,
-                err
+                err: {
+                    message: 'El id no existe'
+                }
             });
         }
 
@@ -52,11 +54,11 @@ app.put('/categoria/:id', verificaToken, (req, res) => {
 /**
  * =========================
  * Eliminar las categorias por ID
+ * Solo si tiene permiso de ROL admin
  * =========================
  */
 
 app.delete('/categoria/:id', [verificaToken, verificaAdmin_role], (req, res) => {
-
     let id = req.params.id;
 
     Categoria.findByIdAndRemove(id, (err, categoriaDB) => {
@@ -125,6 +127,70 @@ app.post('/categoria', verificaToken, (req, res) => {
 
     })
 
+
+});
+
+
+
+
+/**
+ * ========================
+ * obtener todas las categorias
+ * ========================
+ */
+
+app.get('/categoria', verificaToken, (req, res) => {
+
+    Categoria.find({})
+        .sort('descripcion') //para ordenamiento
+        .populate('usuario', 'nombre email') //para traer info de otras tablas
+        .exec((err, categorias) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                categorias
+            })
+        })
+})
+
+
+/**
+ * ========================
+ * obtener categorias por id
+ * ========================
+ */
+
+app.get('/categoria/:id', verificaToken, (req, res) => {
+
+    let id = req.params.id;
+
+    Categoria.findById(id, (err, categoriaDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+        if (!categoriaDB) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'EL id no es correcto'
+                }
+            });
+        }
+
+        res.json({
+            ok: true,
+            categoria: categoriaDB
+        })
+    })
 
 });
 
