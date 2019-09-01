@@ -56,3 +56,12 @@ heroku config:unset nombre
 heroku config:set nombre="Fernando"
 
 .
+
+--------------------------------------PostMan-------------------------------------------------------
+--Codigo de script en "test" para guardar en postman de manera dinamica el token del usuario.
+let resp = pm.response.json();
+
+if(resp.ok){
+    let token = resp.token;
+    pm.environment.set("token", token);
+}
