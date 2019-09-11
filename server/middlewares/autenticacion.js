@@ -51,7 +51,32 @@ let verificaAdmin_role = (req, res, next) => {
 
 }
 
+/**
+ * ===============================
+ * Verificar token en imagen
+ * =============
+ * consifg del middleware
+ */
+let verificaTokenImg = (req, res, next) => {
+    let token = req.query.token;
+
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'Token no valido'
+                }
+            })
+        }
+        //se especifica en la req aquellos valores que se quieren dar de respuesta para la obtencion del mismo
+        req.usuario = decoded.usuario;
+        next();
+    });
+}
+
 module.exports = {
     verificaToken,
-    verificaAdmin_role
+    verificaAdmin_role,
+    verificaTokenImg
 }
