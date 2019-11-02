@@ -16,7 +16,7 @@
         "express-fileupload": "^1.1.5",
         "google-auth-library": "^4.2.0",
         "jsonwebtoken": "^8.5.1",
-        "mongoose": "^5.4.16",
+        "mongoose": "^5.7.5",
         "mongoose-unique-validator": "^2.0.2",
         "underscore": "^1.9.1"
     }
